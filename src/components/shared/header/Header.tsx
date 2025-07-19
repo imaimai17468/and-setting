@@ -7,7 +7,7 @@ export const Header = () => {
 		<header className="fixed top-0 right-0 left-0 z-50">
 			<div className="flex items-center justify-between px-6 py-6">
 				<div>
-					<h1 className="font-bold text-2xl">&[📝]s!</h1>
+					<h1 className="font-medium text-2xl">&[📝]s!</h1>
 					<p className="text-gray-400 text-xs">- and Rules!</p>
 				</div>
 				<div className="flex items-center gap-5">
