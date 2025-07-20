@@ -83,60 +83,34 @@ Claude Code は日本語でコミュニケーションを行う必要があり�
 
 ### 7. 関数定義スタイル
 
-**重要**: すべての関数（React コンポーネントを除く）はアロー関数で定義する
-
-```typescript
-// ❌ 間違い - function宣言
-export function calculateTotal(items: Item[]): number {
-  return items.reduce((sum, item) => sum + item.price, 0);
-}
-
-// ✅ 正しい - アロー関数
-export const calculateTotal = (items: Item[]): number => {
-  return items.reduce((sum, item) => sum + item.price, 0);
-};
-
-// ✅ Reactコンポーネントは両方OK（アロー関数推奨）
-export const Button = ({ onClick, children }: ButtonProps) => {
-  return <button onClick={onClick}>{children}</button>;
-};
-```
+**重要**: すべての関数（React コンポーネントを除く）はアロー関数で定義する。`function`キーワードによる関数宣言は使用せず、常に `const` を使ったアロー関数形式でエクスポートすること。ただし、Reactコンポーネントの定義はこのルールの例外とする。
 
 ### 8. 型定義スタイル
 
-**重要**: オブジェクトの型定義には`interface`ではなく`type`を使用する
+**重要**: オブジェクトの型定義には`interface`ではなく`type`を使用する。`interface`宣言は用いず、常に`type`エイリアスを使用してオブジェクトの形状を定義すること。ユニオン型や交差型など、`type`が持つ柔軟性を活用する。
 
-```typescript
-// ❌ 間違い - interface
-interface UserProps {
-  id: string;
-  name: string;
-  email: string;
-}
+### 9. コメントの原則
 
-interface ButtonProps {
-  onClick: () => void;
-  children: React.ReactNode;
-}
+**原則として、コードにコメントを記述してはならない。** コードは、それ自体がドキュメントとなるように、明確で自己説明的であるべきです。
 
-// ✅ 正しい - type
-type UserProps = {
-  id: string;
-  name: string;
-  email: string;
-};
+#### 例外的にコメントが許可されるケース
+コメントは、以下のいずれかの条件を満たす場合にのみ許可されます。
 
-type ButtonProps = {
-  onClick: () => void;
-  children: React.ReactNode;
-};
+1.  **複雑なロジックの説明**:
+    -   コードを読んだだけでは理解が困難な、複雑なアルゴリズムやビジネスロジックの「なぜ」を説明する場合。
+    -   「何をしているか」ではなく、「なぜその実装が必要なのか」を記述する。
 
-// ✅ ユニオン型や交差型も活用
-type Status = "pending" | "completed" | "failed";
-type ExtendedUser = UserProps & { role: string };
-```
+2.  **リンター/コンパイラ指示**:
+    -   `// @ts-ignore` や `// biome-ignore` のように、特定の行で意図的にルールを無効化する必要がある場合。
+    -   その際は、なぜその無効化が必要なのかを簡潔に説明するコメントを必ず併記する。
 
-### 9. 必須チェックリスト
+3.  **回避策（ワークアラウンド）の明示**:
+    -   ライブラリのバグや、やむを得ない技術的制約により、不自然な実装や回避策を取らざるを得ない場合。
+    -   その理由と、可能であれば関連するIssueへのリンクを記述する。
+
+**上記以外の「コードの動作を説明するコメント」や、不要なコメントは固く禁止します。**
+
+### 10. 必須チェックリスト
 
 操作前に以下のチェックリストを実行してください：
 
@@ -164,6 +138,7 @@ type ExtendedUser = UserProps & { role: string };
 - [ ] ブランチング戦略を理解済み
 - [ ] プッシュ前の最終検証を実行済み
 - [ ] **lefthook を絶対に無視しない** - `LEFTHOOK=0`の使用禁止
+
 
 ## 開発コマンド
 
