@@ -10,7 +10,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
 	title:
-		"&[📝]s - and Rules | The platform for those who write the rules behind the AI.",
+		"&[📝]s! - and Rules! | The platform for those who write the rules behind the AI.",
 	description: "The platform for those who write the rules behind the AI.",
 	icons: {
 		icon: "/app-icon.png",
@@ -24,11 +24,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body
-				className={`dark mt-[10%] flex min-h-screen w-full justify-center px-6 antialiased md:px-0 ${geistMono.className}`}
-			>
+			<body className={`dark antialiased ${geistMono.className}`}>
 				<Header />
-				{children}
+				<div className="mt-[10%] flex min-h-screen w-full justify-center px-6 md:px-0">
+					<div className="w-full max-w-7xl">{children}</div>
+				</div>
 			</body>
 		</html>
 	);
