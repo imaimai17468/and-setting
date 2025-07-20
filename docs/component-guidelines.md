@@ -3,461 +3,83 @@
 ## コンポーネント命名規則
 
 ### 厳格なルール
-1. **ディレクトリ名**: kebab-case
-2. **TSXファイル名**: PascalCase
-3. **TSファイル名**: camelCase（ユーティリティ関数、ヘルパー、型など）
-4. **コンポーネント名**: PascalCase（ファイル名と完全一致）
-5. **ディレクトリとファイル名の対応**: kebab-case → PascalCase変換
-6. **バレルファイル禁止**: index.tsを使用せず、直接インポートのみ
-7. **インポートパス**: `@/`エイリアスを使用し、相対パスは使用しない
+1.  **ディレクトリ名**: kebab-case
+2.  **TSXファイル名**: PascalCase
+3.  **TSファイル名**: camelCase（ユーティリティ関数、ヘルパー、型など）
+4.  **コンポーネント名**: PascalCase（ファイル名と完全一致）
+5.  **ディレクトリとファイル名の対応**: kebab-caseからPascalCaseへの変換規則に従うこと。
+6.  **バレルファイル禁止**: `index.ts`による集約エクスポートは行わず、必ず個別のファイルから直接インポートすること。
+7.  **インポートパス**: `@/`エイリアスを使用し、相対パスは使用しないこと。
 
 ### 対応規則
-- **ディレクトリ名とTSXファイル名は一致必須**（kebab-case → PascalCase変換）
-- **TSXファイル名とコンポーネント名は完全一致**
-- **ディレクトリ名とTSXファイル名が一致しない場合は新しいディレクトリを作成**
-
-### 例
-
-#### ✅ 正しい構造
-```
-src/components/features/videos/
-├── Videos.tsx              // export function Videos()
-├── videoHelpers.ts         // camelCase for TS utility files
-└── empty-state/
-    └── EmptyState.tsx      // export function EmptyState()
-```
-
-#### ❌ 間違った構造
-```
-src/components/features/videos/
-├── VideoGrid.tsx           // ディレクトリ名と一致しない
-├── video-helpers.ts        // camelCaseにすべき
-└── empty-state/
-    └── VideoEmpty.tsx      // ディレクトリ名と一致しない
-```
+- ディレクトリ名とTSXファイル名は、kebab-caseからPascalCaseへの変換規則において一致している必要がある。
+- TSXファイル名と、その中で定義され���コンポーネント名は完全に一致させること。
+- 上記の規則に合致しないコンポーネントを作成する場合は、新しいディレクトリを作成すること。
 
 ### 命名変換テーブル
-
-| ディレクトリ (kebab-case) | TSXファイル (PascalCase) | TSファイル (camelCase) | コンポーネント名 |
-|------------------------|----------------------|---------------------|----------------|
-| `video-grid`           | `VideoGrid.tsx`      | `videoHelpers.ts`   | `VideoGrid`    |
-| `empty-state`          | `EmptyState.tsx`     | `stateUtils.ts`     | `EmptyState`   |
-| `user-profile`         | `UserProfile.tsx`    | `userHelpers.ts`    | `UserProfile`  |
-| `api-client`           | `ApiClient.tsx`      | `apiUtils.ts`       | `ApiClient`    |
+ディレクトリ名（kebab-case）、TSXファイル名（PascalCase）、TSファイル名（camelCase）、コンポーネント名（PascalCase）は、それぞれ定められた命名規則に従う必要があります。例えば、`video-grid`というディレクトリには`VideoGrid.tsx`というコンポーネントファイルが配置され、その中のコンポーネント名は`VideoGrid`となります。
 
 ### インポートスタイル
-```typescript
-// ✅ 正しい - 直接インポートのみ
-import { LoginForm } from "@/components/features/auth/login-form/LoginForm";
-import { RegisterForm } from "@/components/features/auth/register-form/RegisterForm";
-
-// ❌ 間違い - バレルファイルの使用
-import { LoginForm, RegisterForm } from "@/components/features/auth";
-```
+コンポーネントをインポートする際は、必ずファイルパスを直接指定すること。`index.ts`（バレルファイル）からまとめてインポートする形式は禁止です。
 
 ### ディレクトリ構造ガイドライン
-```
-src/components/
-├── ui/                     # shadcn/ui components only
-│   ├── button.tsx         # From shadcn/ui (flat naming)
-│   └── input.tsx          # From shadcn/ui (flat naming)
-├── shared/                # Reusable components across features
-│   ├── header/
-│   │   └── Header.tsx
-│   └── loading-spinner/
-│       └── LoadingSpinner.tsx
-└── features/              # Screen/page-specific components
-    ├── auth/
-    │   └── login-form/
-    │       └── LoginForm.tsx
-    └── dashboard/
-        └── user-stats/
-            └── UserStats.tsx
-```
+コンポーネントは、その役割に応じて`ui/`、`shared/`、`features/`のいずれかのディレクトリに配置します。`ui/`はshadcn/ui由来のコンポーネント、`shared/`は機能横断で再利用��れるコンポーネント、`features/`は特定の機能やページに固有のコンポーネントを格納します。
 
 ## Server/Client Components 使い分けルール
 
 ### 基本原則: Server Components優先
-**原則**: 基本的にはServer Componentsで作成し、どうしても必要な場合のみClient Componentsを使用する。
+原則として、すべてのコンポーネントはServer Componentsとして作成し、インタラクティブ性やブラウザAPIへのアクセスなど、明確な理由がある場合にのみClient Componentsを使用します。
 
 ### 必須ルール
-1. **page.tsx は必ずServer Component** - ページレベルのコンポーネントはServer Componentsで実装
-2. **`'use client'` は最小限** - 本当に必要な場合のみClient Componentsを使用
-3. **データフェッチ優先度**: Server Components > Client Components
+1.  **page.tsx は必ずServer Component**: ページのルートとなるコンポーネントは、必ずServer Componentとして実装します。
+2.  **`'use client'` は最小限**: Client Componentsの使用は、本当に必要なコンポーネントに限定します。
+3.  **データフェッチ優先度**: データフェッチは、可能な限りServer Componentsで行います。
 
 ### Server Components を使用する場合（デフォルト）
-- **静的コンテンツ表示**
-- **データベースやAPIからのデータフェッチ**
-- **SEOが重要なコンテンツ**
-- **初期表示パフォーマンスが重要**
-- **秘密情報や環境変数へのアクセス**
+静的なコンテンツ表示、データベースやAPIからのデータ取得、SEOが重要なページ、初期表示速度が求められる場合、またはサーバー側の環境変数にアクセスする必要��ある場合は、Server Componentsを使用します。
 
 ### Client Components を使用する場合（必要時のみ）
-- **useState、useEffect などのReactフックが必要**
-- **ブラウザAPI（localStorage、geolocation等）の使用**
-- **イベントハンドラー（onClick、onSubmit等）が必要**
-- **リアルタイムな状態管理が必要**
-- **Third-party ライブラリがClient Side実行を要求**
-
-### 実装例
-
-#### ✅ 正しい構造: Server Component優先
-```typescript
-// app/dashboard/page.tsx (Server Component)
-async function DashboardPage() {
-  const data = await fetchUserData(); // Server側でデータフェッチ
-  
-  return (
-    <div>
-      <DashboardHeader user={data.user} />
-      <InteractiveChart data={data.analytics} /> {/* Client Component */}
-      <StaticReports reports={data.reports} /> {/* Server Component */}
-    </div>
-  );
-}
-
-// components/features/dashboard/interactive-chart/InteractiveChart.tsx
-'use client'; // 必要時のみ
-
-import { useState } from 'react';
-
-export function InteractiveChart({ data }: Props) {
-  const [selectedPeriod, setSelectedPeriod] = useState('monthly');
-  
-  return (
-    <div>
-      <button onClick={() => setSelectedPeriod('weekly')}>週次</button>
-      <Chart data={data} period={selectedPeriod} />
-    </div>
-  );
-}
-```
-
-#### ❌ 間違った例: 不必要なClient Component
-```typescript
-// ❌ 悪い例: データフェッチをClient側で実行
-'use client';
-
-import { useState, useEffect } from 'react';
-
-function BadDashboard() {
-  const [data, setData] = useState(null);
-  
-  useEffect(() => {
-    fetchUserData().then(setData); // Server側で実行すべき
-  }, []);
-  
-  return <div>{data && <DashboardContent data={data} />}</div>;
-}
-```
+`useState`や`useEffect`といったReactフックが必要な場合、`localStorage`などのブラウザAPIを使用する場合、`onClick`などのイベントハンドラを実装する場合、またはクライアントサイドでの実行が必須のサードパーティライブラリを使用する場合は、Client Componentsを選択します。
 
 ### 判断基準チェックリスト
-コンポーネント作成時の判断フロー：
-
-1. **このコンポーネントはpage.tsxか？**
-   - ✅ はい → Server Component必須
-
-2. **Reactフック（useState、useEffect等）が必要か？**
-   - ✅ はい → Client Component
-   - ❌ いいえ → 次へ
-
-3. **ブラウザAPIやイベントハンドラーが必要か？**
-   - ✅ はい → Client Component
-   - ❌ いいえ → 次へ
-
-4. **純粋な表示・レンダリングのみか？**
-   - ✅ はい → Server Component（デフォルト）
+コンポーネントを作成する際は、まずServer Componentとして実装可能か検討します。ReactフックやブラウザAPI、イベントハンドラが必要になった時点で、初めてClient Componentへの切り替えを検討してください。
 
 ### パフォーマンス最適化パターン
-
-#### Client Component の境界を最小化
-```typescript
-// ✅ 推奨: 必要な部分のみClient Component
-function ProductPage({ product }: Props) { // Server Component
-  return (
-    <div>
-      <ProductInfo product={product} /> {/* Server Component */}
-      <ProductImages images={product.images} /> {/* Server Component */}
-      <AddToCartButton productId={product.id} /> {/* Client Component のみ */}
-    </div>
-  );
-}
-
-// ❌ 避ける: ページ全体をClient Component
-'use client';
-function BadProductPage({ product }: Props) {
-  // ページ全体が不必要にClient側で実行される
-}
-```
+ページ全体をClient Componentにするのではなく、静的な部分はServer Componentとして残し、インタラクティブな機能を持つ部分のみを別のClient Componentとして切り出すことで、パフォーマンスを最適化します。
 
 ## コンポーネント分離ガイドライン
 
 ### 核心原則: 動作の観察可能性
-**コンポーネント分離の基本的なルールは「すべての動作が観察できるかどうか」です。** 長さだけでは分離の基準ではありません。重要な質問は：**テストを書けるか？適切なテストを書くために分離が必要か？**
+コンポーネントを分離するかの判断は、コードの行数ではなく、「その動作がテスト可能か」を基準に行います。テストを書くためにコンポーネントの責務を明確にする必要がある場合、それが分離のサインです。
 
 ### 分離しない場合
-
-#### ✅ propsベースの条件レンダリング
-propsで直接制御できる条件レンダリングがある場合：
-
-```typescript
-// ✅ 分離不要 - 異なるpropsでStorybookストーリーを通じてテスト可能
-function MyComponent({ variant }: { variant: 'primary' | 'secondary' }) {
-  return (
-    <div>
-      {variant === 'primary' && <PrimaryContent />}
-      {variant === 'secondary' && <SecondaryContent />}
-    </div>
-  );
-}
-
-// ✅ Storybookストーリーでテスト
-export const Primary = { args: { variant: 'primary' } };
-export const Secondary = { args: { variant: 'secondary' } };
-```
+コンポーネントの表示内容が、受け取ったpropsの値によって単純に切り替わるだけであれば、分離は不要です。このようなコンポーネントは、Storybookで異なるpropsを与えたストーリーを作成することで、各表示パターンを十分にテストできます。
 
 ### 分離する場合
-
-#### 🔄 条件レンダリング用の計算・処理された値
-propsを処理して、その計算結果を条件レンダリングに使用する場合：
-
-```typescript
-// ❌ テストが困難 - 計算ロジックとレンダリングが混在
-function BadComponent({ user, settings }: Props) {
-  const isVipUser = user.level > 5 && settings.vipEnabled && user.subscriptionActive;
-  
-  return (
-    <div>
-      {isVipUser && <VipBadge />}
-      {!isVipUser && <RegularBadge />}
-    </div>
-  );
-}
-
-// ✅ 改善 - 計算とレンダリングを分離
-function computeUserStatus(user: User, settings: Settings): 'vip' | 'regular' {
-  return user.level > 5 && settings.vipEnabled && user.subscriptionActive ? 'vip' : 'regular';
-}
-
-function UserBadge({ status }: { status: 'vip' | 'regular' }) {
-  return (
-    <div>
-      {status === 'vip' && <VipBadge />}
-      {status === 'regular' && <RegularBadge />}
-    </div>
-  );
-}
-
-function MyComponent({ user, settings }: Props) {
-  const status = computeUserStatus(user, settings);
-  return <UserBadge status={status} />;
-}
-```
+propsから受け取った値を基に、何らかの計算や複雑な条件判定を行い、その結果によって表示を切り替える場合は、分離を検討します。計算ロジックをコンポーネントから抽出し、純粋な関数としてテスト可能にすることが推奨されます。コンポーネント自体は、その計算結果をpropsとして受け取り、表示に専念するようにします。
 
 ## 高度なパターン: 内部可視性制御
-
-**核心原則**: 外部条件レンダリング（`{condition && <Component />}`）ではなく、条件をコンポーネント内部に`isVisible`プロップとして移動する。これにより、テストでのフックモックが不要になります。
-
-### ❌ 外部条件レンダリング（テストが困難）
-```typescript
-// 親コンポーネント
-{isStreaming && (
-  <StreamingMessage text={streamingText} timestamp={getCurrentTime()} />
-)}
-{loading && !isStreaming && <LoadingMessage />}
-
-// テストにはuseTourismAgentフックのモックが必要
-jest.mock('@/hooks/useTourismAgent');
-mockUseTourismAgent.mockReturnValue({ isStreaming: true, loading: false, ... });
-```
-
-### ✅ 内部可視性制御（テストが簡単）
-```typescript
-// 親コンポーネント - 常にレンダリング、コンポーネントが可視性を決定
-<StreamingMessage 
-  text={streamingText} 
-  timestamp={getCurrentTime()} 
-  isVisible={isStreaming} 
-/>
-<LoadingMessage isVisible={loading && !isStreaming} />
-
-// テストはpropsで簡単
-render(<StreamingMessage text="test" timestamp="12:34" isVisible={true} />);
-render(<StreamingMessage text="test" timestamp="12:34" isVisible={false} />);
-```
-
-### コンポーネント実装パターン
-```typescript
-interface ComponentProps {
-  // ... other props
-  isVisible: boolean;
-}
-
-export function Component({ isVisible, ...otherProps }: ComponentProps) {
-  // 可視性制御のための早期リターンパターン
-  if (!isVisible) return null;
-  
-  return (
-    <div>
-      {/* Component content */}
-    </div>
-  );
-}
-```
+親コンポーネント側で条件分岐を用いてコンポーネントの表示・非表示を切り替えるのではなく、常にコンポーネントをレンダリングし、`isVisible`のようなpropsを渡してコンポーネント内部で表示を制御します。この方法により、親の持つ状態（フックなど）をモックすることなく、コンポーネントを単体でテストしやすくなります。
 
 ## 高度なパターン: 完全ロジック抽出
-
-**核心原則**: 外部状態（フック、props）に依存する複雑な条件ロジックに遭遇した時、条件だけでなく分岐ロジック全体を別の関数として抽出する。
-
-### ❌ 不十分なアプローチ: 条件のみの抽出
-```typescript
-// 悪い例: 条件の検証のみ抽出
-export function shouldSendMessage(message: string): boolean {
-  return message.trim().length > 0;
-}
-
-// 実際の実行ロジックはまだテストが困難
-const handleSendMessage = async () => {
-  if (!shouldSendMessage(newMessage)) return; // ← これはテスト可能
-  
-  // しかし、この複雑なロジックはまだテストが困難
-  const userMessage = newMessage;
-  setNewMessage("");
-  try {
-    if (useStreaming) {
-      await sendStreamingMessage(userMessage);
-    } else {
-      await sendMessage(userMessage);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
-```
-
-### ✅ 改善されたアプローチ: 完全ロジック抽出
-```typescript
-// 分岐ロジック全体をテスト可能な関数として抽出
-export async function sendUserMessage(
-  message: string,
-  useStreaming: boolean,
-  sendStreamingMessage: (msg: string) => Promise<void>,
-  sendMessage: (msg: string) => Promise<unknown>,
-): Promise<{ success: boolean; error?: string }> {
-  if (!message.trim()) {
-    return { success: false, error: "Message is empty" };
-  }
-
-  try {
-    if (useStreaming) {
-      await sendStreamingMessage(message);
-    } else {
-      await sendMessage(message);
-    }
-    return { success: true };
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : "Unknown error",
-    };
-  }
-}
-
-// コンポーネントはシンプルで焦点が明確
-const handleSendMessage = async () => {
-  const userMessage = newMessage;
-  setNewMessage("");
-
-  const result = await sendUserMessage(
-    userMessage,
-    useStreaming,
-    sendStreamingMessage,
-    sendMessage,
-  );
-
-  if (!result.success && result.error) {
-    console.error("Error:", result.error);
-  }
-};
-```
+外部の状態（フックやprops）に依存する複雑な分岐ロジックは、条件判定部分だけでなく、分岐後の処理全体をコンポーネントから別の関数として抽出します。コンポーネントは、その抽出された関数を呼び出すだけのシンプルな役割に徹することで、テストが容易になり、責務が明確になります。
 
 ## Package by Feature アーキテクチャ
-
-**核心原則**: 技術タイプではなく機能によって関連するコードをグループ化する。機能固有のロジックは、それを使用するコンポーネントの近くに配置する。
-
-### ディレクトリ組織ルール
-1. **グローバルユーティリティ**: 真にジェネリックな関数は`src/lib/`または`src/hooks/`に配置
-2. **機能固有ロジック**: 機能固有のフック、ユーティリティ、型は機能ディレクトリ内に配置
-3. **コロケーション**: 関連するコードは可能な限り使用場所の近くに配置
-
-### ✅ 正しい機能組織
-```
-src/components/features/chat-page/
-├── ChatPage.tsx                 # メインコンポーネント
-├── messageHandlers.ts           # 機能固有ロジック
-├── useChatState.ts             # 機能固有フック
-├── types.ts                    # 機能固有型
-├── chat-header/
-│   └── ChatHeader.tsx
-├── chat-message/
-│   ├── ChatMessage.tsx
-│   └── messageUtils.ts         # メッセージ固有ユーティリティ
-└── chat-input-area/
-    ├── ChatInputArea.tsx
-    └── inputValidation.ts      # 入力固有ロジック
-```
+関連するコードは、技術的な分類（例: `hooks`, `utils`）ではなく、機能的なまとまりでグループ化します。機能固有のロジック、フック、型定義などは、���れらを使用するコンポーネントの近くに配置（コロケーション）することで、コードの凝集度を高め、保守性を向上させます。真に汎用的で、複数の機能から利用されるものだけを、`src/lib`や`src/hooks`といったグローバルな場所に配置します。
 
 ## 決定フレームワーク
+コンポーネントを分離するかどうかは、以下の点を考慮して決定します。
+- その動作はpropsで制御できるか？
+- 外部の条件によってレンダリングが左右されるか？
+- 外部の状態に依存した複雑なロジックを含んでいるか？
+- レンダリング前に計算処理が必要か？
+- その部分だけで意味のあるテストが書けるか？
+- 明確で単一の責任を持っているか？
 
-コンポーネント分離を検討する際の質問：
-
-1. **このビヘイビアをpropsで制御できるか？**
-   - ✅ はい → 同じコンポーネントに保持、Storybookストーリーでテスト
-   - ❌ いいえ → 内部可視性制御による分離を検討
-
-2. **外部条件レンダリング（`{condition && <Component />}`）はあるか？**
-   - ✅ はい → 条件をコンポーネント内部に`isVisible`プロップとして移動
-   - ❌ いいえ → 現在の構造を維持
-
-3. **外部状態依存の複雑な条件ロジックはあるか？**
-   - ✅ はい → ロジックブロック全体を別の関数として抽出
-   - ❌ いいえ → 一緒に保持
-
-4. **条件レンダリング前に計算・処理はあるか？**
-   - ✅ はい → 計算ロジックを分離し、処理された値を受け取るコンポーネントを作成
-   - ❌ いいえ → 一緒に保持
-
-5. **この部分を単独で意味のあるテストを書けるか？**
-   - ✅ はい → 分離の良い候補
-   - ❌ いいえ → 一緒に保持
-
-6. **この部分は明確で単一の責任を持つか？**
-   - ✅ はい → 保守性向上のため分離を検討
-   - ❌ いいえ → 最初にロジックをリファクタリング
-
-### 適切な分離の利点
-
-- **テスト可能性**: 各部分を単独でテスト可能
-- **再利用性**: 分離されたコンポーネントは他の場所で再利用可能
-- **保守性**: 明確な責任と境界
-- **Storybook**: より良いコンポーネントドキュメンテーションと視覚的テスト
+適切な分離は、テスト可能性、再利用性、保守性を高め、Storybookによるドキュメント化を容易にします。
 
 ## コンポーネント作成チェックリスト
-- [ ] 正しい場所を決定: `ui/` (shadcn/ui), `shared/` (再利用可能), または `features/` (画面固有)
-- [ ] ディレクトリ名がkebab-case（`ui/`は平坦な命名を使用）
-- [ ] TSXファイル名がPascalCase（`ui/`は平坦な命名を使用）
-- [ ] TSファイル名がcamelCase（ユーティリティ、ヘルパー、型用）
-- [ ] コンポーネント名がファイル名と完全一致
-- [ ] ディレクトリ名がファイル名に変換される（kebab-case → PascalCase）
-- [ ] 機能固有ロジックは機能ディレクトリ内に配置（Package by Feature）
-- [ ] グローバルユーティリティは真にジェネリックな関数のみ
-- [ ] バレルファイル（index.ts）は使用しない
-- [ ] 相対パスではなく`@/`エイリアスで絶対インポートパスを使用
-- [ ] 全てのコンポーネントで直接インポートを使用
-- [ ] **ARIA属性と競合するprop名を避ける**（例：`role`の代わりに`avatarType`を使用）
-- [ ] **Server/Client Components の適切な選択**: page.tsxは必ずServer Component、フックやイベントハンドラーが必要な場合のみClient Component
+コンポーネントを作成する際は、配置場所、命名規則、インポートパスのエイリアス使用、バレルファイルの不使用、`Package by Feature`の原則、Server/Client Componentsの適切な選択など、本ガイドラインに定められたすべてのルールを遵守してください。また、`role`のようなHTMLのARIA属性と競合するprop名は避けてください。
 
 ## AIエージェント向け重要な注意事項
-- **常にユーザーの承認を得る** コンポーネントの作成、移動、リファクタリング前に
-- **明確な計画を提示する** どの命名規則が適用されるか、正確なファイルパスを示す
-- **命名の一貫性を確認する** ファイル操作前にディレクトリ、ファイル、コンポーネント名の間の一貫性を確認
+コンポーネントの作成やリファクタリングを行う前には、必ずユーザーの承認を得てください。その際、適用する命名規則や正確なファイルパスを含んだ、明確な計画を提示することが求められます。

@@ -2,54 +2,27 @@
 
 ## 英語文法規則
 
-**原則**: 自然な英語を使用し、適切な文法規則に従う。
+**原則**: 自然な英語を使用し、適切な文法規則に従います。
 
 ### 基本規則
-- **関数**: 動詞で始める (`getUserById`, `isValid`, `canEdit`)
-- **変数**: 名詞を使用 (`userId`, `totalPrice`, `isLoading`)
-- **コンポーネント**: 名詞を使用 (`UserProfile`, `NavigationMenu`)
-- **イベントハンドラー**: `handle` + イベント名 (`handleSubmit`, `handleClick`)
-- **関数引数**: 2個以上の引数を持つ場合はオブジェクトを使用 (`getUserData({ id, includeProfile })`, `createUser({ name, email })`)
+- **関数**: `getUserById`や`isValid`のように、処理内容を表す動詞で始めます。
+- **変数**: `userId`や`isLoading`のように、データの内容を表す名詞を使用します。
+- **コンポーネント**: `UserProfile`のように、UIの役割を表す名詞を使用します。
+- **イベントハンドラー**: `handleSubmit`のように、`handle` + イベント名で命名します。
+- **関数引数**: 2個以上の引数を持つ場合は、個別に渡すのではなくオブジェクト形式で渡します。
 
-### よくある間違い
-```typescript
-// ❌ 動詞の欠落
-function userById() // → getUserById()
-const validEmail // → isEmailValid or validateEmail()
+### よくある間違いの回避
+- 関数名から動詞を省略しないこと。
+- 日本語的な発想の直訳（例: `getUserInfo`）ではなく、より自然な英語（例: `getUserInformation`）を選ぶこと。
+- 不自然な語順（例: `usersActive`）ではなく、正しい英語の語順（例: `activeUsers`）にすること。
 
-// ❌ 日本語的思考
-const getUserInfo // → getUserInformation
-const calcPrice // → calculatePrice
+## 省���規則
 
-// ❌ 不自然な語順
-const usersActive // → activeUsers
-function getUserFromId() // → getUserById()
-
-// ❌ 複数引数を個別に定義
-function createUser(name, email) // → createUser({ name, email })
-function updateSettings(id, theme, language) // → updateSettings({ id, theme, language })
-function calculatePrice(quantity, unitPrice) // → calculatePrice({ quantity, unitPrice })
-```
-
-## 省略規則
-
-**原則**: 省略形を避け、完全な英語の単語を使用する。
+**原則**: 省略形を避け、完全な英語の単語を使用します。
 
 ### 基本規則
-- **避ける**: `bg` → `backgroundColor`, `prev` → `previous`, `btn` → `button`
-- **許可**: 確立された技術用語のみ (`id`, `url`, `ref`)
+- `bg`や`btn`のような安易な省略は避け、`backgroundColor`や`button`のように完全な単語で記述します。
+- `id`、`url`、`ref`のような、技術的に広く確立された用語のみ省略が許可されます。
 
 ### 頭字語の大文字小文字規則
-複合語では、頭字語の標準的な大文字小文字を維持する:
-
-```typescript
-// ✅ 正しい
-const generateURLParameter = () => {};  // URL は大文字のまま
-const APIClient = class {};             // API は大文字のまま
-const parseJWTToken = () => {};         // JWT は大文字のまま
-
-// ❌ 間違い
-const generateUrlParameter = () => {};  // Url → URL
-const apiClient = class {};             // api → API
-const parseJwtToken = () => {};         // Jwt → JWT
-```
+複合語の中に頭字語（例: URL, API, JWT）が含まれる場合、その頭字語は元のケースを維持します。例えば、`generateURLParameter`のように`URL`はすべて大文字のままにします。`generateUrlParameter`のようにキャメルケースに変換してはいけません。
