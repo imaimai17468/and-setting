@@ -1,4 +1,4 @@
-import { MemberCard } from "@/components/features/member/MemberCard";
+import { MemberCard } from "@/components/features/member/member-card/MemberCard";
 import type { Member } from "@/entities/member";
 
 const MAX_DISPLAY_COUNT = 8; // 4列 × 2行
