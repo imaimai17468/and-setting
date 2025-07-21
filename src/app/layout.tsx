@@ -26,7 +26,7 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={`dark antialiased ${geistMono.className}`}>
 				<Header />
-				<div className="mt-[10%] flex min-h-screen w-full justify-center px-6 md:px-0">
+				<div className="my-[10%] flex min-h-screen w-full justify-center px-6 md:px-0">
 					<div className="w-full max-w-7xl">{children}</div>
 				</div>
 			</body>
