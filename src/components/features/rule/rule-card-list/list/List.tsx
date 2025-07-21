@@ -2,7 +2,7 @@ import { AddRuleCard } from "@/components/features/rule/add-rule-card/AddRuleCar
 import { RuleCard } from "@/components/features/rule/rule-card/RuleCard";
 import type { Rule } from "@/entities/rule";
 
-const MAX_DISPLAY_COUNT = 12; // 4列 × 3行
+const MAX_DISPLAY_COUNT = 8; // 4列 × 2行
 
 type ListProps = {
 	ruleArray: Rule[];

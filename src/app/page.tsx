@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Suspense } from "react";
+import { LoadingSkeleton } from "@/components/features/rule/loading-skeleton/LoadingSkeleton";
 import { RuleCardList } from "@/components/features/rule/rule-card-list/RuleCardList";
 
 export default function Home() {
@@ -27,13 +28,7 @@ export default function Home() {
 			</div>
 			<div className="space-y-4">
 				<h2 className="font-semibold text-2xl">Featured Rules</h2>
-				<Suspense
-					fallback={
-						<div className="text-center text-muted-foreground">
-							ルールを読み込み中...
-						</div>
-					}
-				>
+				<Suspense fallback={<LoadingSkeleton />}>
 					<RuleCardList />
 				</Suspense>
 			</div>
