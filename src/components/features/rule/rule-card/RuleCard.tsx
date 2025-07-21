@@ -1,12 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Rule } from "@/entities/rule";
 
 type RuleCardProps = {
@@ -14,45 +8,49 @@ type RuleCardProps = {
 };
 
 export const RuleCard = ({ rule }: RuleCardProps) => {
-	const firstContent = rule.contentArray[0]?.content;
-
 	return (
-		<Card className="w-full max-w-2xl">
-			<CardHeader>
-				<div className="mb-4 flex items-center gap-3">
-					<Avatar>
+		<Card className="h-full">
+			<CardHeader className="pb-0">
+				<CardTitle className="line-clamp-2 font-medium text-sm">
+					{rule.title}
+				</CardTitle>
+				<div className="mt-2 flex items-center gap-2">
+					<Avatar className="h-6 w-6">
 						<AvatarImage src={rule.user.iconUrl} alt={rule.user.name} />
-						<AvatarFallback>
-							{rule.user.name.slice(0, 2).toUpperCase()}
+						<AvatarFallback className="text-xs">
+							{rule.user.name.charAt(0)}
 						</AvatarFallback>
 					</Avatar>
-					<span className="font-medium text-muted-foreground">
+					<span className="text-muted-foreground text-xs">
 						{rule.user.name}
 					</span>
 				</div>
-				<CardTitle>{rule.title}</CardTitle>
 			</CardHeader>
-			{firstContent && (
-				<CardContent>
-					<div className="rounded-md bg-muted p-4">
-						<p className="line-clamp-3 whitespace-pre-wrap text-muted-foreground text-sm">
-							{firstContent}
-						</p>
+			<CardContent className="pt-0">
+				<div className="space-y-3">
+					{rule.contentArray.length > 0 && (
+						<div className="rounded-md border bg-muted/30 p-3">
+							<p className="line-clamp-3 text-muted-foreground text-xs">
+								{rule.contentArray[0].content}
+							</p>
+						</div>
+					)}
+					<div className="flex flex-wrap gap-1">
+						{rule.toolArray.map((tool) => (
+							<Badge key={tool} variant="secondary" className="text-xs">
+								{tool}
+							</Badge>
+						))}
 					</div>
-				</CardContent>
-			)}
-			<CardFooter className="flex flex-wrap gap-2">
-				{rule.toolArray.map((tool) => (
-					<Badge key={tool} variant="default">
-						{tool}
-					</Badge>
-				))}
-				{rule.tagArray.map((tag) => (
-					<Badge key={tag} variant="secondary">
-						#{tag}
-					</Badge>
-				))}
-			</CardFooter>
+					<div className="flex flex-wrap gap-1">
+						{rule.tagArray.map((tag) => (
+							<Badge key={tag} variant="outline" className="text-xs">
+								{tag}
+							</Badge>
+						))}
+					</div>
+				</div>
+			</CardContent>
 		</Card>
 	);
 };
