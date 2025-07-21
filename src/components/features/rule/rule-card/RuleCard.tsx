@@ -16,13 +16,13 @@ export const RuleCard = ({ rule }: RuleCardProps) => {
 				</CardTitle>
 				<div className="mt-2 flex items-center gap-2">
 					<Avatar className="h-6 w-6">
-						<AvatarImage src={rule.user.iconUrl} alt={rule.user.name} />
+						<AvatarImage src={rule.member.iconUrl} alt={rule.member.name} />
 						<AvatarFallback className="text-xs">
-							{rule.user.name.charAt(0)}
+							{rule.member.name.charAt(0)}
 						</AvatarFallback>
 					</Avatar>
 					<span className="text-muted-foreground text-xs">
-						{rule.user.name}
+						{rule.member.name}
 					</span>
 				</div>
 			</CardHeader>

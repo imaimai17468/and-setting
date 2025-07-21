@@ -28,12 +28,12 @@ export const NoContent: Story = {
 	},
 };
 
-export const NoUserIcon: Story = {
+export const NoMemberIcon: Story = {
 	args: {
 		rule: {
 			...mockRuleArray[0],
-			user: {
-				...mockRuleArray[0].user,
+			member: {
+				...mockRuleArray[0].member,
 				iconUrl: undefined,
 			},
 		},

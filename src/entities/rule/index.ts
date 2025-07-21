@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { UserSchema } from "@/entities/user";
+import { MemberSchema } from "@/entities/member";
 
 export const TagSchema = z.string();
 export type Tag = z.infer<typeof TagSchema>;
@@ -21,7 +21,7 @@ export type Content = z.infer<typeof ContentSchema>;
 
 export const RuleSchema = z.object({
 	id: z.string(),
-	user: UserSchema,
+	member: MemberSchema,
 	title: z.string(),
 	contentArray: z.array(ContentSchema),
 	toolArray: z.array(ToolSchema),

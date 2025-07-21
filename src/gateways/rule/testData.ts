@@ -1,10 +1,10 @@
 import type { Rule } from "@/entities/rule";
-import { mockUserArray } from "@/gateways/user/testData";
+import { mockMemberArray } from "@/gateways/member/testData";
 
 export const mockRuleArray: Rule[] = [
 	{
 		id: "rule_01",
-		user: mockUserArray[0],
+		member: mockMemberArray[0],
 		title: "and-setting プロジェクト開発ルール",
 		contentArray: [
 			{
@@ -19,7 +19,7 @@ export const mockRuleArray: Rule[] = [
 	},
 	{
 		id: "rule_02",
-		user: mockUserArray[1],
+		member: mockMemberArray[1],
 		title: "コンポーネント設計の高度なパターン",
 		contentArray: [
 			{
@@ -36,7 +36,7 @@ export const mockRuleArray: Rule[] = [
 	},
 	{
 		id: "rule_03",
-		user: mockUserArray[2],
+		member: mockMemberArray[2],
 		title: "Git利用時の注意点",
 		contentArray: [], // コンテンツがないケース
 		toolArray: ["Cline"],

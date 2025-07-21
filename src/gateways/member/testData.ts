@@ -1,22 +1,22 @@
-import type { User } from "@/entities/user";
+import type { Member } from "@/entities/member";
 
-export const mockUserArray: User[] = [
+export const mockMemberArray: Member[] = [
 	{
-		id: "user_01",
+		id: "member_01",
 		name: "Taro Yamada",
 		iconUrl: "https://github.com/shadcn.png",
 		followerArray: [],
 		followingArray: [],
 	},
 	{
-		id: "user_02",
+		id: "member_02",
 		name: "Hanako Sato",
 		iconUrl: undefined,
 		followerArray: [],
 		followingArray: [],
 	},
 	{
-		id: "user_03",
+		id: "member_03",
 		name: "Kenji Tanaka",
 		iconUrl: "https://github.com/vercel.png",
 		followerArray: [],
