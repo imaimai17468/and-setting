@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Suspense } from "react";
+import { LoadingSkeleton as MemberLoadingSkeleton } from "@/components/features/member/loading-skeleton/LoadingSkeleton";
+import { MemberCardList } from "@/components/features/member/member-card-list/MemberCardList";
 import { LoadingSkeleton } from "@/components/features/rule/loading-skeleton/LoadingSkeleton";
 import { RuleCardList } from "@/components/features/rule/rule-card-list/RuleCardList";
 
@@ -32,8 +34,11 @@ export default function Home() {
 					<RuleCardList />
 				</Suspense>
 			</div>
-			<div>
+			<div className="space-y-4">
 				<h2 className="font-semibold text-2xl">Featured Members</h2>
+				<Suspense fallback={<MemberLoadingSkeleton />}>
+					<MemberCardList />
+				</Suspense>
 			</div>
 		</div>
 	);
