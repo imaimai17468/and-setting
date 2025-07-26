@@ -26,5 +26,7 @@ export const RuleSchema = z.object({
 	contentArray: z.array(ContentSchema),
 	toolArray: z.array(ToolSchema),
 	tagArray: z.array(TagSchema),
+	createdAt: z.string().datetime(),
+	updatedAt: z.string().datetime(),
 });
 export type Rule = z.infer<typeof RuleSchema>;
