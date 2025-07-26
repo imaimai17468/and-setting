@@ -4,6 +4,11 @@
 # working directory name when running `supabase init`.
 project_id = "imaimai-front-templete"
 
+[remotes.develop]
+project_id = "vukgadfgmvtnzegjvngh"
+[remotes.develop.db.seed]
+sql_paths = ["./seed.sql"]
+
 [api]
 enabled = true
 # Port to use for the API URL.
