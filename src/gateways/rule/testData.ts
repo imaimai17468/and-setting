@@ -1,6 +1,10 @@
 import type { Rule } from "@/entities/rule";
 import { mockMemberArray } from "@/gateways/member/testData";
 
+const now = new Date();
+const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
 export const mockRuleArray: Rule[] = [
 	{
 		id: "rule_01",
@@ -16,6 +20,8 @@ export const mockRuleArray: Rule[] = [
 		],
 		toolArray: ["Claude", "Gemini"],
 		tagArray: ["project-rule", "must-read"],
+		createdAt: weekAgo.toISOString(),
+		updatedAt: yesterday.toISOString(),
 	},
 	{
 		id: "rule_02",
@@ -176,6 +182,8 @@ Performance optimization is an ongoing process. Focus on the biggest impact area
 		],
 		toolArray: ["Copilot", "Cursor"],
 		tagArray: ["architecture", "react", "best-practice"],
+		createdAt: yesterday.toISOString(),
+		updatedAt: yesterday.toISOString(),
 	},
 	{
 		id: "rule_03",
@@ -184,5 +192,7 @@ Performance optimization is an ongoing process. Focus on the biggest impact area
 		contentArray: [], // コンテンツがないケース
 		toolArray: ["Cline"],
 		tagArray: ["git", "workflow"],
+		createdAt: now.toISOString(),
+		updatedAt: now.toISOString(),
 	},
 ];
