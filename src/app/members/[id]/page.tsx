@@ -4,15 +4,16 @@ import { Header } from "@/components/features/member-detail/header/Header";
 import { fetchMemberById } from "@/gateways/member";
 
 type MemberDetailPageProps = {
-	params: {
+	params: Promise<{
 		id: string;
-	};
+	}>;
 };
 
 export default async function MemberDetailPage({
 	params,
 }: MemberDetailPageProps) {
-	const member = await fetchMemberById(params.id);
+	const { id } = await params;
+	const member = await fetchMemberById(id);
 
 	if (!member) {
 		notFound();

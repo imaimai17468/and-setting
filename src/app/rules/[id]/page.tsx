@@ -4,13 +4,14 @@ import { Header } from "@/components/features/rule-detail/header/Header";
 import { fetchRuleById } from "@/gateways/rule";
 
 type RuleDetailPageProps = {
-	params: {
+	params: Promise<{
 		id: string;
-	};
+	}>;
 };
 
 export default async function RuleDetailPage({ params }: RuleDetailPageProps) {
-	const rule = await fetchRuleById(params.id);
+	const { id } = await params;
+	const rule = await fetchRuleById(id);
 
 	if (!rule) {
 		notFound();
