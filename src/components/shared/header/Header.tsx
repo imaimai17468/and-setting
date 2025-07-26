@@ -1,8 +1,12 @@
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { fetchCurrentMember } from "@/gateways/member";
+import { AuthNavigation } from "./auth-navigation/AuthNavigation";
 
-export const Header = () => {
+export const Header = async () => {
+	const member = await fetchCurrentMember();
+
 	return (
 		<header className="fixed top-0 right-0 left-0 z-50">
 			<div className="flex items-center justify-between px-6 py-6">
@@ -26,9 +30,7 @@ export const Header = () => {
 					>
 						More <ChevronDown className="h-4 w-4" />
 					</Button>
-					<Button size="sm" className="text-sm">
-						Sign In
-					</Button>
+					<AuthNavigation member={member} />
 				</div>
 			</div>
 		</header>
